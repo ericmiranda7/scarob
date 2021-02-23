@@ -1,0 +1,5 @@
+GPIO.BCM
+
+ULTRASONIC SENSORS
+2, 3, 4 - US ECHO right, left, top
+14, 15, 18 - US TRIG right, left, top
