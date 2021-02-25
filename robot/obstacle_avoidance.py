@@ -2,14 +2,20 @@ import RPi.GPIO as GPIO
 from motor import *
 import time
 
-TRIG = 18
-ECHO = 4
+LEFT_TRIG = 15
+LEFT_ECHO = 3
+RIGHT_TRIG = 14
+RIGHT_ECHO = 2
 
-GPIO.setup(TRIG, GPIO.OUT)
-GPIO.setup(ECHO, GPIO.IN)
+
+GPIO.setup(LEFT_TRIG, GPIO.OUT)
+GPIO.setup(LEFT_ECHO, GPIO.IN)
+GPIO.setup(RIGHT_TRIG, GPIO.OUT)
+GPIO.setup(RIGHT_ECHO, GPIO.IN)
 
 #calibrate
-GPIO.output(TRIG, False)
+GPIO.output(LEFT_TRIG, False)
+GPIO.output(RIGHT_TRIG, False)
 time.sleep(0.2)
 
 def get_distance(trigger, echo):
@@ -30,10 +36,17 @@ def get_distance(trigger, echo):
     return distance
 
 while True:
-    dist = get_distance(TRIG, ECHO)
-    if dist <= 40:
+    dist = get_distance(LEFT_TRIG, LEFT_ECHO)
+    if dist <= 30:
         right()
         time.sleep(0.2)
     else:
-        forward(50)
+        forward(40)
+        time.sleep(0.05)
+    dist = get_distance(RIGHT_TRIG, RIGHT_ECHO)
+    if dist <= 30:
+        left()
+        time.sleep(0.2)
+    else:
+        forward(40)
         time.sleep(0.05)
