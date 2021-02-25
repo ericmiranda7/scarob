@@ -1,4 +1,5 @@
 from robot.motor import *
+from robot.check_us import move_safely
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 import cv2
@@ -16,16 +17,16 @@ center_image_y = image_height / 2
 minimum_area = 250
 maximum_area = 100000
 
-forward_speed = 100
-turn_speed = 55
+forward_speed = 50
+turn_speed = 35
 
 HUE_VAL = 65
 
-lower_color = np.array([HUE_VAL-10, 100, 100])
-upper_color = np.array([HUE_VAL+10, 255, 255])
+#lower_color = np.array([HUE_VAL-10, 100, 100])
+#upper_color = np.array([HUE_VAL+10, 255, 255])
 
-#lower_color = np.array([39, 58, 133])
-#upper_color = np.array([66, 255, 255])
+lower_color = np.array([76, 123, 54])
+upper_color = np.array([90, 255, 255])
 
 
 def start_tracking():
@@ -63,17 +64,20 @@ def start_tracking():
         if ball_location:
             if (ball_location[0] > minimum_area) and (ball_location[0] < maximum_area):
                 if ball_location[1] > (center_image_x + (image_width/3)):
+                    move_safely()
                     right(turn_speed)
                     print("Turning right")
                 elif ball_location[1] < (center_image_x - (image_width/3)):
+                    move_safely()
                     left(turn_speed)
                     print("Turning left")
                 else:
-                    stopMotor()
+                    move_safely()
                     forward(forward_speed)
                     sleep(0.2)
                     print("Forward")
             elif (ball_location[0] < minimum_area):
+                move_safely()
                 left(turn_speed)
                 print("Target isn't large enough, searching left")
             else:

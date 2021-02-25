@@ -3,21 +3,32 @@ import time
 
 GPIO.setmode(GPIO.BCM)
 
-TRIG = 18
-ECHO = 4
+TRIG = 14
+ECHO = 2
 
 GPIO.setup(TRIG, GPIO.OUT)
 GPIO.setup(ECHO, GPIO.IN)
 
 GPIO.output(TRIG, False)
-time.sleep(0.1)
+time.sleep(0.2)
 
 while True:
+    counter = 0
+    has_failed = False
+
     GPIO.output(TRIG, True)
     time.sleep(0.00001)
     GPIO.output(TRIG, False)
     while GPIO.input(ECHO) == 0:
+        counter += 1
+        if counter == 5000:
+            has_failed = True
+            break
         pulse_start = time.time()
+
+    if has_failed:
+        break
+    
     while GPIO.input(ECHO) == 1:
         pulse_end = time.time()
     pulse_duration = pulse_end - pulse_start
