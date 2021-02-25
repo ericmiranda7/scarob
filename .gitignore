@@ -1,6 +1,9 @@
 # virtual env
 venv/
 
+#vscode config
+.vscode/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
