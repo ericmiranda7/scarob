@@ -46,11 +46,8 @@ def get_distance(trigger, echo):
 
 def is_unsafe():
     dist = get_distance(LEFT_TRIG, LEFT_ECHO)
-<<<<<<< HEAD
     if not dist:
         return True
-=======
->>>>>>> f3ec88423ded885a5f419769969f009aadfde017
     if dist <= 30:
         return 'r'
     dist = get_distance(RIGHT_TRIG, RIGHT_ECHO)
