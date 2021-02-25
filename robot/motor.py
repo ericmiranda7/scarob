@@ -34,6 +34,7 @@ def stopMotor():
 stopMotor()
 
 def left(ts=75):
+    stopMotor()
     pwmR.ChangeDutyCycle(ts)
     pwmL.ChangeDutyCycle(ts)
     GPIO.output(R_Forward, True)
@@ -43,8 +44,9 @@ def left(ts=75):
 
 
 def right(ts=75):
-    pwmL.ChangeDutyCycle(ts)
+    stopMotor()
     pwmR.ChangeDutyCycle(ts)
+    pwmL.ChangeDutyCycle(ts)
     GPIO.output(L_Forward, True)
     GPIO.output(R_Forward, False)
     GPIO.output(R_Backward, True)
@@ -52,12 +54,14 @@ def right(ts=75):
 
 
 def forward(fs=100):
+    stopMotor()
     pwmR.ChangeDutyCycle(fs)
     pwmL.ChangeDutyCycle(fs)
     GPIO.output(L_Forward,True)
     GPIO.output(R_Forward,True)
 
 def backward(fs=100):
+    stopMotor()
     pwmR.ChangeDutyCycle(fs)
     pwmL.ChangeDutyCycle(fs)
     GPIO.output(L_Backward,True)
