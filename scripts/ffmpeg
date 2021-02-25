@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ffmpeg -framerate 25 -video_size 1080x720 -i /dev/video0 -f rtsp rtsp://localhost:8554/mystream
