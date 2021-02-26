@@ -10,23 +10,23 @@ camera = PiCamera()
 image_width = 640
 image_height = 480
 camera.resolution = (image_width, image_height)
-camera.framerate = 32
+camera.framerate = 10
 rawCapture = PiRGBArray(camera, size=(image_width, image_height))
 center_image_x = image_width / 2
 center_image_y = image_height / 2
 minimum_area = 250
 maximum_area = 100000
 
-forward_speed = 50
-turn_speed = 35
+forward_speed = 60
+turn_speed = 60
 
-HUE_VAL = 65
+HUE_VAL = 25
 
-#lower_color = np.array([HUE_VAL-10, 100, 100])
-#upper_color = np.array([HUE_VAL+10, 255, 255])
+lower_color = np.array([HUE_VAL-10, 100, 100])
+upper_color = np.array([HUE_VAL+10, 255, 255])
 
-lower_color = np.array([76, 123, 54])
-upper_color = np.array([90, 255, 255])
+#lower_color = np.array([76, 123, 54])
+#upper_color = np.array([90, 255, 255])
 
 
 def start_tracking():
@@ -59,25 +59,24 @@ def start_tracking():
             ball_location = [object_area, object_x, object_y]
         else:
             ball_location = None
-
         main_contour = None
         if ball_location:
             if (ball_location[0] > minimum_area) and (ball_location[0] < maximum_area):
-                if ball_location[1] > (center_image_x + (image_width/3)):
-                    move_safely()
+                if ball_location[1] > (center_image_x + (image_width/5)):
+                    """ move_safely() """
                     right(turn_speed)
                     print("Turning right")
-                elif ball_location[1] < (center_image_x - (image_width/3)):
-                    move_safely()
+                elif ball_location[1] < (center_image_x - (image_width/5)):
+                    """ move_safely() """
                     left(turn_speed)
                     print("Turning left")
                 else:
-                    move_safely()
+                    """ move_safely() """
                     forward(forward_speed)
                     sleep(0.2)
                     print("Forward")
             elif (ball_location[0] < minimum_area):
-                move_safely()
+                """ move_safely() """
                 left(turn_speed)
                 print("Target isn't large enough, searching left")
             else:

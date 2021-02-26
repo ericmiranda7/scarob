@@ -1,5 +1,5 @@
 from robot.motor import *
 
-forward(100)
-time.sleep(2)
+backward(100)
+time.sleep(1)
 GPIO.cleanup()

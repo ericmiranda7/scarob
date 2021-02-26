@@ -39,7 +39,7 @@ def left(ts=75):
     pwmL.ChangeDutyCycle(ts)
     GPIO.output(R_Forward, True)
     GPIO.output(R_Backward,False)
-    GPIO.output(L_Backward,True)
+    GPIO.output(L_Backward,False)
     GPIO.output(L_Forward, False)
 
 
