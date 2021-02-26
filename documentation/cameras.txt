@@ -1,0 +1,4 @@
+Stream + Falldetection
+    PiCamera (0)
+Object Detection
+    Webcamera (1)
