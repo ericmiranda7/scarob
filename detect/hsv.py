@@ -20,7 +20,7 @@ maximum_area = 100000
 forward_speed = 60
 turn_speed = 60
 
-HUE_VAL = 25
+HUE_VAL = 32
 
 lower_color = np.array([HUE_VAL-10, 100, 100])
 upper_color = np.array([HUE_VAL+10, 255, 255])

@@ -27,7 +27,7 @@ while True:
         pulse_start = time.time()
 
     if has_failed:
-        break
+        continue
     
     while GPIO.input(ECHO) == 1:
         pulse_end = time.time()
