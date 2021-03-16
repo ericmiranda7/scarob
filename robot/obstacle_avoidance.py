@@ -71,7 +71,7 @@ while True:
 
 
     dist = get_distance(TOP_TRIG, TOP_ECHO)
-    if (dist <= 30):
+    if (dist <= 45):
         l_dist = get_distance(LEFT_TRIG, LEFT_ECHO)
         r_dist = get_distance(RIGHT_TRIG, RIGHT_ECHO)
         if (l_dist + r_dist <= 60):
