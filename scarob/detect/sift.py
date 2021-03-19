@@ -177,7 +177,7 @@ def start_sift_tracking():
     image_width = video.get(cv2.CAP_PROP_FRAME_WIDTH)
     image_height = video.get(cv2.CAP_PROP_FRAME_HEIGHT)
     i = 0
-    frame_skip = 3
+    frame_skip = 5
     
     # read template: enable to read files with 2bytes chalactors
     temp = imread(template)
