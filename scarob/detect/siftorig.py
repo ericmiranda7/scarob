@@ -5,7 +5,12 @@ import math
 import numpy as np
 import time  # time.time() to get time
 import threading
-from robot.drive import *
+
+from robot.motor import *
+from sensors.ultrasonic_sensors import get_distance
+
+forward_speed = 40
+turn_speed = 75
 
 # read image in japanese direcotry
 def imread(filename, flags=cv2.IMREAD_COLOR, dtype=np.uint8):
@@ -17,13 +22,14 @@ def imread(filename, flags=cv2.IMREAD_COLOR, dtype=np.uint8):
         print(e)
         return None
 
+
 class TempTracker:
     """
     input: image and descriptor
 
     """
 
-    def __init__(self, image_width, image_height, temp, descriptor='ORB'):
+    def __init__(self, temp, descriptor='ORB'):
 
         # switch detector and matcher
         self.detector = self.get_des(descriptor)
@@ -50,10 +56,6 @@ class TempTracker:
         self.matches = []
         self.inliers = []
         self.good = []  # good matches
-
-        self.loc_array = []
-        self.image_width = image_width
-        self.image_height = image_height
 
     def get_des(self, name):
         return {
@@ -112,7 +114,28 @@ class TempTracker:
 
         cv2.imshow("current", cv2.cvtColor(img, cv2.COLOR_BGR2GRAY))
 
+    def pivot_left(self):
+        left(100)
+        time.sleep(0.4)
+        stopMotor()
+
+    def turn_left(self):
+        left(100)
+        time.sleep(0.1)
+        stopMotor()
+
+    def pivot_right(self):
+        right(100)
+        time.sleep(0.1)
+        stopMotor()
+    
+    def go_forward(self):
+        forward(80)
+        time.sleep(0.5)
+        stopMotor()
+
     def track(self, img):
+        global found
         pts1, pts2, count = self.get_goodmatches(img)
 
         self.findHomography = False
@@ -123,13 +146,13 @@ class TempTracker:
         if count > 4:
             self.H, self.mask = cv2.findHomography(pts1, pts2, cv2.RANSAC, 3.0)
             if self.check_mask():
-                self.found = True
+                found = True
                 self.get_rect()
-                drive(self)
+                print("hiyabusa", self.rect)
                 self.get_scale()
                 self.findHomography = True
         else:
-            self.found = False
+            found = False
 
         if self.findHomography:
             self.scalebuf.append(self.scale)
@@ -140,21 +163,51 @@ class TempTracker:
 
         cv2.imshow("detected", self.show)
 
-    def get_pts(self):
-        x1 = self.loc_array[0].tolist()[0][0]
-        x2 = self.loc_array[2].tolist()[0][0]
+    def get_pts(self, loc_array):
+        x1 = loc_array[0].tolist()[0][0]
+        x2 = loc_array[2].tolist()[0][0]
         obj_width = x2 - x1
         return [x1, obj_width]
 
     def get_rect(self):
+        global loc_array
+        global found
         h, w = self.template.shape
         pts = np.float32([[0, 0], [0, h-1], [w-1, h-1],
                           [w-1, 0]]).reshape(-1, 1, 2)
         self.rect = cv2.perspectiveTransform(pts, self.H)
-        self.loc_array = np.int32(self.rect)
+        loc_array = np.int32(self.rect)
+        found = True
         # draw lines
         self.show = cv2.polylines(
             self.show, [np.int32(self.rect)], True, 255, 3, cv2.LINE_AA)
+
+    def drive(self):
+        global found
+
+        if found:
+
+            [x, obj_width] = self.get_pts(loc_array)
+            object_x = x + (obj_width / 2)
+            center_image_x = image_width / 2
+            if object_x > (center_image_x + (image_width / 5)):
+                print("right")
+                r = threading.Thread(target=self.pivot_right)
+                r.start()
+            elif object_x < (center_image_x - (image_width / 5)):
+                print("left")
+                l = threading.Thread(target=self.turn_left)
+                l.start()
+            else:
+                if get_distance() > 30:
+                    f = threading.Thread(target=self.go_forward)
+                    f.start()
+                    print("forward")
+                else:
+                    print("Close enough to target")
+        else:
+            x = threading.Thread(target=self.pivot_left)
+            x.start()
 
     def check_mask(self):
         self.inliner = np.count_nonzero(self.mask)
@@ -209,6 +262,12 @@ def load_args():
 
 # Main Function
 def start_sift_tracking():
+    global image_width
+    global image_height
+    global loc_array
+    global found
+    found = False
+
     vfile, template, DES = [0, 'images/babyyoda.jpeg', 'SIFT']
     print(vfile)
     print("Using "+DES+" Detector! \n")
@@ -233,7 +292,7 @@ def start_sift_tracking():
     temp = imread(template)
     #exit("can not open template!") if temp is None else cv2.imshow("template", temp)
 
-    tracker = TempTracker(image_width, image_height, temp, DES)
+    tracker = TempTracker(temp, DES)
 
     count = 0
 
@@ -250,8 +309,8 @@ def start_sift_tracking():
         print(t2-t1)
         count += 1
         print(count)
-        if count >= 10 or tracker.found:
-            drive(tracker)
+        if count >= 10 or found:
+            tracker.drive()
             count = 0
         # T.check()
 
