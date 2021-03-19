@@ -53,7 +53,7 @@ class TempTracker:
         self.loc_array = []
         self.image_width = image_width
         self.image_height = image_height
-        self.found = false
+        self.found = False
     def get_des(self, name):
         return {
             'ORB': cv2.ORB_create(nfeatures=1000, scoreType=cv2.ORB_HARRIS_SCORE),
@@ -169,7 +169,7 @@ def load_args():
 
 # Main Function
 def start_sift_tracking():
-    vfile, template, DES = [0, 'images/babyyoda.jpeg', 'SIFT']
+    vfile, template, DES = [1, 'images/babyyoda.jpeg', 'SIFT']
     print(vfile)
     print("Using "+DES+" Detector! \n")
 
@@ -179,11 +179,6 @@ def start_sift_tracking():
     image_height = video.get(cv2.CAP_PROP_FRAME_HEIGHT)
     i = 0
     frame_skip = 10
-
-    # Exit if video not opened.
-    if not video.isOpened():
-        print("Could not open video!")
-        sys.exit()
     
     # read template: enable to read files with 2bytes chalactors
     temp = imread(template)
@@ -192,12 +187,11 @@ def start_sift_tracking():
     tracker = TempTracker(image_width, image_height, temp, DES)
 
     while True:
-        
+        # Read a new frame
+        ok, frame = video.read()
+        if not ok:
+            break
         if i > frame_skip - 1:
-            # Read a new frame
-            ok, frame = video.read()
-            if not ok:
-                break
             # Tracking Object
             t1 = time.time()
             tracker.track(frame)
