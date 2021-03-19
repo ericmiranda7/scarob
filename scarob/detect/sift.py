@@ -113,7 +113,6 @@ class TempTracker:
             if self.check_mask():
                 self.found = True
                 self.get_rect()
-                drive(self)
         else:
             self.found = False
 
@@ -178,7 +177,7 @@ def start_sift_tracking():
     image_width = video.get(cv2.CAP_PROP_FRAME_WIDTH)
     image_height = video.get(cv2.CAP_PROP_FRAME_HEIGHT)
     i = 0
-    frame_skip = 20
+    frame_skip = 3
     
     # read template: enable to read files with 2bytes chalactors
     temp = imread(template)
@@ -194,6 +193,7 @@ def start_sift_tracking():
         if i > frame_skip - 1:
             # Tracking Object
             t1 = time.time()
+            tracker.found = False
             tracker.track(frame)
             t2 = time.time()
             print(t2-t1)
