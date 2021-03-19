@@ -1,0 +1,18 @@
+Startup ->
+1. Rotate 360
+2. If found, proceed to follow
+3. If not Found:
+    3.a Check forward distance
+    3.b Move forward if safe
+    3.c If not safe
+        Turn left until safe to move forward
+4. Repeat 1.
+
+Object found ->
+1. Check x distance from center of frame and turn left / right proportionally ((obj_x - center_x) + 0.5(obj_len))
+2. Once in center of frame, move forward
+3. Repeat 1.
+
+Object safe distance ->
+1. Check area threshold before moving forward
+2. Check US before moving forward
