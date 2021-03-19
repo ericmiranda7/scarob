@@ -169,7 +169,7 @@ def load_args():
 
 # Main Function
 def start_sift_tracking():
-    vfile, template, DES = [1, 'images/babyyoda.jpeg', 'SIFT']
+    vfile, template, DES = [0, 'images/babyyoda.jpeg', 'SIFT']
     print(vfile)
     print("Using "+DES+" Detector! \n")
 
@@ -184,12 +184,6 @@ def start_sift_tracking():
     if not video.isOpened():
         print("Could not open video!")
         sys.exit()
-
-    # Read first frame.
-    ok, frame = video.read()
-    if not ok:
-        print("Cannot read video file")
-        sys.exit()
     
     # read template: enable to read files with 2bytes chalactors
     temp = imread(template)
@@ -197,25 +191,20 @@ def start_sift_tracking():
 
     tracker = TempTracker(image_width, image_height, temp, DES)
 
-    count = 0
-
     while True:
-        # Read a new frame
-        ok, frame = video.read()
-        if not ok:
-            break
         
         if i > frame_skip - 1:
+            # Read a new frame
+            ok, frame = video.read()
+            if not ok:
+                break
             # Tracking Object
             t1 = time.time()
             tracker.track(frame)
             t2 = time.time()
             print(t2-t1)
-            count += 1
-            print(count)
             if tracker.found:
                 drive(tracker)
-                count = 0
             i = 0
             continue
         i += 1
