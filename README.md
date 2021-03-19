@@ -194,7 +194,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 * [Font Awesome](https://fontawesome.com)
 
 
-
+<div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
