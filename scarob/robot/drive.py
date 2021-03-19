@@ -18,7 +18,7 @@ def turn_left():
     stopMotor()
 
 
-def pivot_right():
+def turn_right():
     right(100)
     time.sleep(0.1)
     stopMotor()
@@ -26,7 +26,7 @@ def pivot_right():
 
 def go_forward():
     forward(80)
-    time.sleep(0.5)
+    time.sleep(0.3)
     stopMotor()
 
 
@@ -37,7 +37,7 @@ def drive(self):
         center_image_x = self.image_width / 2
         if object_x > (center_image_x + (self.image_width / 5)):
             print("right")
-            r = threading.Thread(target=pivot_right)
+            r = threading.Thread(target=turn_right)
             r.start()
         elif object_x < (center_image_x - (self.image_width / 5)):
             print("left")
