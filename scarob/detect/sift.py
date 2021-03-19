@@ -53,7 +53,7 @@ class TempTracker:
         self.loc_array = []
         self.image_width = image_width
         self.image_height = image_height
-
+        self.found = false
     def get_des(self, name):
         return {
             'ORB': cv2.ORB_create(nfeatures=1000, scoreType=cv2.ORB_HARRIS_SCORE),
