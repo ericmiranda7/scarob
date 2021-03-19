@@ -210,7 +210,7 @@ def start_sift_tracking():
         t2 = time.time()
         print(t2-t1)
         count += 1
-        if tracker.found:
+        if count >= 10 or tracker.found:
             drive(tracker)
             count = 0
         # T.check()
