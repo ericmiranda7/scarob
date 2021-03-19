@@ -53,6 +53,7 @@ class TempTracker:
         self.loc_array = []
         self.image_width = image_width
         self.image_height = image_height
+        self.found = False
 
     def get_des(self, name):
         return {
