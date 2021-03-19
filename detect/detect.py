@@ -269,7 +269,7 @@ def start_sift_tracking():
     global found
     found = False
 
-    vfile, template, DES = [0, 'babyyoda.jpeg', 'SIFT']
+    vfile, template, DES = [0, 'images/babyyoda.jpeg', 'SIFT']
     print(vfile)
     print("Using "+DES+" Detector! \n")
 
