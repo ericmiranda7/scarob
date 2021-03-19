@@ -169,7 +169,7 @@ def load_args():
 
 # Main Function
 def start_sift_tracking():
-    vfile, template, DES = [0, 'images/babyyoda.jpeg', 'SIFT']
+    vfile, template, DES = [1, 'images/babyyoda.jpeg', 'SIFT']
     print(vfile)
     print("Using "+DES+" Detector! \n")
 
@@ -177,6 +177,8 @@ def start_sift_tracking():
     video = cv2.VideoCapture(vfile)
     image_width = video.get(cv2.CAP_PROP_FRAME_WIDTH)
     image_height = video.get(cv2.CAP_PROP_FRAME_HEIGHT)
+    i = 0
+    frame_skip = 10
 
     # Exit if video not opened.
     if not video.isOpened():
@@ -188,7 +190,7 @@ def start_sift_tracking():
     if not ok:
         print("Cannot read video file")
         sys.exit()
-
+    
     # read template: enable to read files with 2bytes chalactors
     temp = imread(template)
     #exit("can not open template!") if temp is None else cv2.imshow("template", temp)
@@ -202,18 +204,21 @@ def start_sift_tracking():
         ok, frame = video.read()
         if not ok:
             break
-
-        # Tracking Object
-        t1 = time.time()
-        tracker.track(frame)
-        t2 = time.time()
-        print(t2-t1)
-        count += 1
-        print(count)
-        if count >= 10 or tracker.found:
-            drive(tracker)
-            count = 0
-        # T.check()
+        
+        if i > frame_skip - 1:
+            # Tracking Object
+            t1 = time.time()
+            tracker.track(frame)
+            t2 = time.time()
+            print(t2-t1)
+            count += 1
+            print(count)
+            if tracker.found:
+                drive(tracker)
+                count = 0
+            i = 0
+            continue
+        i += 1
 
         # Exit if "Q" pressed
         k = cv2.waitKey(1) & 0xff
