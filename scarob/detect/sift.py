@@ -41,7 +41,6 @@ class TempTracker:
         self.kp1, self.des1 = self.detector.detectAndCompute(
             self.template, None)
         self.kpb, self.desb = self.kp1, self.des1
-        self.findHomography = False  # homography estimated flag
         self.scalebuf = []
         self.scale = 0
         self.H = np.eye(3, dtype=np.float32)
@@ -102,20 +101,9 @@ class TempTracker:
         pts2 = np.float32(pts2)
         return pts1, pts2, count
 
-    def draw_matches(self, img):
-        _, _, count = self.get_goodmatches(img)
-
-        if count:
-            matched_images = cv2.drawMatchesKnn(
-                self.template, self.kp1, img, self.kp2, self.good, None, flags=2)
-            cv2.imshow("matched", matched_images)
-
-        cv2.imshow("current", cv2.cvtColor(img, cv2.COLOR_BGR2GRAY))
-
     def track(self, img):
         pts1, pts2, count = self.get_goodmatches(img)
 
-        self.findHomography = False
         self.show = img
         self.matches.append(count)
 
@@ -126,17 +114,8 @@ class TempTracker:
                 self.found = True
                 self.get_rect()
                 drive(self)
-                self.get_scale()
-                self.findHomography = True
         else:
             self.found = False
-
-        if self.findHomography:
-            self.scalebuf.append(self.scale)
-            self.inliers.append(self.inliner)
-        else:
-            self.scalebuf.append(0)
-            self.inliers.append(0)
 
         cv2.imshow("detected", self.show)
 
@@ -165,30 +144,11 @@ class TempTracker:
         else:
             return 0
 
-    def get_scale(self):
-        sq = self.H[0:1, 0:1]*self.H[0:1, 0:1]
-        self.scale = math.sqrt(sq.sum()/2)
-
-    def show_scale(self):
-        pass
-
     def refresh(self, img):
         self.track(img)
         self.kpb, self.desb = self.kp1, self.des1
 
-# Minor change
-
-
-class ContinuousTempTracker(TempTracker):
-    """
-    Update template when get good matchings
-    """
-    pass
-
-
 # main function for parser
-
-
 def load_args():
     parser = argparse.ArgumentParser(description='')
 

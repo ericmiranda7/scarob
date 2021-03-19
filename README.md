@@ -27,15 +27,15 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/ericmiranda7/scarob">
-    <img src="images/beetle.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/othneildrew/Best-README-Template">
+    <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">SCAROB</h3>
+  <h3 align="center">Best-README-Template</h3>
 
   <p align="center">
-    [S]enior [C]itizen Old [A]ge [Rob]ot
-    <!--<br />
+    An awesome README template to jumpstart your projects!
+    <br />
     <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
     <br />
     <br />
@@ -43,7 +43,7 @@
     ·
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>-->
+    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
   </p>
 </p>
 
@@ -194,7 +194,6 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 * [Font Awesome](https://fontawesome.com)
 
 
-<div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
