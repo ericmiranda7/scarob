@@ -168,7 +168,7 @@ def load_args():
 
 # Main Function
 def start_sift_tracking():
-    vfile, template, DES = [1, 'images/babyyoda.jpeg', 'SIFT']
+    vfile, template, DES = [0, 'images/babyyoda.jpeg', 'SIFT']
     print(vfile)
     print("Using "+DES+" Detector! \n")
 
