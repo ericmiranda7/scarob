@@ -1,4 +1,4 @@
 Stream + Falldetection
-    PiCamera (0)
-Object Detection
-    Webcamera (1)
+    USB Webcamera (video1)
+Object(Human) Detection
+    PiCamera (video0)
