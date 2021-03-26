@@ -32,25 +32,30 @@ def go_forward():
 
 def drive(self):
     if self.found:
-        [x, obj_width] = self.get_pts()
-        object_x = x + (obj_width / 2)
-        center_image_x = self.image_width / 2
-        if object_x > (center_image_x + (self.image_width / 5)):
-            print("right")
-            r = threading.Thread(target=turn_right)
-            r.start()
-        elif object_x < (center_image_x - (self.image_width / 5)):
-            print("left")
-            l = threading.Thread(target=turn_left)
-            l.start()
+        if get_distance() <= 30:
+            print("Close enough to target")
         else:
-            if get_distance() > 30:
-                f = threading.Thread(target=go_forward)
-                f.start()
-                print("forward")
+            [x, obj_width] = self.get_pts()
+            object_x = x + (obj_width / 2)
+            center_image_x = self.image_width / 2
+            if object_x > (center_image_x + (self.image_width / 5)):
+                print("right")
+                r = threading.Thread(target=turn_right)
+                r.start()
+            elif object_x < (center_image_x - (self.image_width / 5)):
+                print("left")
+                l = threading.Thread(target=turn_left)
+                l.start()
             else:
-                print("Close enough to target")
+                    f = threading.Thread(target=go_forward)
+                    f.start()
+                    print("forward")
+
     else:
         print("couldn't find")
-        x = threading.Thread(target=pivot_left)
-        x.start()
+        self.notFoundCount += 1
+        if self.notFoundCount >= 5:
+            x = threading.Thread(target=pivot_left)
+            x.start()
+            time.sleep(1.3)
+            self.notFoundCount = 0
