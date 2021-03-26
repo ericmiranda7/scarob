@@ -25,7 +25,7 @@ def turn_right():
 
 
 def go_forward():
-    forward(80)
+    forward(100)
     time.sleep(0.3)
     stopMotor()
 
