@@ -185,21 +185,12 @@ def start_sift_tracking():
     vfile, template, DES = [1, 'images/babyyoda.jpeg', 'SIFT']
     print(vfile)
     print("Using "+DES+" Detector! \n")
-
-    # video reader
-    video = cv2.VideoCapture(vfile)
-    image_width = video.get(cv2.CAP_PROP_FRAME_WIDTH)
-    image_height = video.get(cv2.CAP_PROP_FRAME_HEIGHT)
-    i = 0
-    frame_skip = 10
     
     # read template: enable to read files with 2bytes chalactors
     temp = imread(template)
     #exit("can not open template!") if temp is None else cv2.imshow("template", temp)
 
     tracker = TempTracker(image_width, image_height, temp, DES)
-
-    count = 0
 
     for frame in camera.capture_continuous(rawCaputre, format="bgr", use_video_port=True):
         image = frame.array
@@ -221,33 +212,3 @@ def start_sift_tracking():
             break
         if k == ord('r'):
             tracker.refresh(image)
-
-
-
-"""     while True:
-        # Read a new frame
-        ok, frame = video.read()
-        if not ok:
-            break
-        if i > frame_skip - 1:
-            # Tracking Object
-            t1 = time.time()
-            tracker.found = False
-            tracker.track(frame)
-            t2 = time.time()
-            print(t2-t1)
-            drive(tracker)
-            i = 0
-            continue
-        i += 1
-
-        # Exit if "Q" pressed
-        k = cv2.waitKey(1) & 0xff
-        if k == ord('q'):
-            GPIO.cleanup()
-            break
-        if k == ord('s'):
-            cv2.imwrite('result.png', tracker.show)
-            break
-        if k == ord('r'):
-            tracker.refresh(frame) """
