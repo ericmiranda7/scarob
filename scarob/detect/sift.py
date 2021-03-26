@@ -7,6 +7,19 @@ import time  # time.time() to get time
 import threading
 from robot.drive import *
 
+#Picamera stuff
+from picamera.array import PiRGBArray
+from picamera import PiCamera
+
+camera = PiCamera()
+image_width = 640
+image_height = 480
+camera.resolution = (image_width, image_height)
+camera.framerate = 10
+rawCaputre = PiRGBArray(camera, size=(image_width, image_height))
+center_image_x = image_width / 2
+center_image_y = image_height / 2
+
 # read image in japanese direcotry
 def imread(filename, flags=cv2.IMREAD_COLOR, dtype=np.uint8):
     try:
@@ -188,7 +201,30 @@ def start_sift_tracking():
 
     count = 0
 
-    while True:
+    for frame in camera.capture_continuous(rawCaputre, format="bgr", use_video_port=True):
+        image = frame.array
+        t1 = time.time()
+        tracker.found = False
+        tracker.track(image)
+        t2 = time.time()
+        print(t2-t1)
+        drive(tracker)
+
+        rawCaputre.truncate(0)
+        # Exit if "Q" pressed
+        k = cv2.waitKey(1) & 0xff
+        if k == ord('q'):
+            GPIO.cleanup()
+            break
+        if k == ord('s'):
+            cv2.imwrite('result.png', tracker.show)
+            break
+        if k == ord('r'):
+            tracker.refresh(image)
+
+
+
+"""     while True:
         # Read a new frame
         ok, frame = video.read()
         if not ok:
@@ -214,4 +250,4 @@ def start_sift_tracking():
             cv2.imwrite('result.png', tracker.show)
             break
         if k == ord('r'):
-            tracker.refresh(frame)
+            tracker.refresh(frame) """

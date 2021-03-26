@@ -32,6 +32,7 @@ def go_forward():
 
 def drive(self):
     if self.found:
+        self.notFoundCount = 0
         if get_distance() <= 30:
             print("Close enough to target")
         else:
@@ -52,10 +53,10 @@ def drive(self):
                     print("forward")
 
     else:
-        print("couldn't find")
         self.notFoundCount += 1
         if self.notFoundCount >= 5:
+            print("couldn't find")
             x = threading.Thread(target=pivot_left)
             x.start()
-            time.sleep(1.3)
+            time.sleep(1)
             self.notFoundCount = 0
