@@ -1,0 +1,5 @@
+** get area of object for safe distance
+
+** install fall detection on powerfull laptop
+
+** make body

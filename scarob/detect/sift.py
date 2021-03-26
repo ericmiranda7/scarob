@@ -7,6 +7,19 @@ import time  # time.time() to get time
 import threading
 from robot.drive import *
 
+#Picamera stuff
+from picamera.array import PiRGBArray
+from picamera import PiCamera
+
+camera = PiCamera()
+image_width = 640
+image_height = 480
+camera.resolution = (image_width, image_height)
+camera.framerate = 10
+rawCaputre = PiRGBArray(camera, size=(image_width, image_height))
+center_image_x = image_width / 2
+center_image_y = image_height / 2
+
 # read image in japanese direcotry
 def imread(filename, flags=cv2.IMREAD_COLOR, dtype=np.uint8):
     try:
@@ -54,7 +67,7 @@ class TempTracker:
         self.image_width = image_width
         self.image_height = image_height
         self.found = False
-
+        self.notFoundCount = 0
     def get_des(self, name):
         return {
             'ORB': cv2.ORB_create(nfeatures=1000, scoreType=cv2.ORB_HARRIS_SCORE),
@@ -114,7 +127,6 @@ class TempTracker:
             if self.check_mask():
                 self.found = True
                 self.get_rect()
-                drive(self)
         else:
             self.found = False
 
@@ -178,18 +190,9 @@ def start_sift_tracking():
     video = cv2.VideoCapture(vfile)
     image_width = video.get(cv2.CAP_PROP_FRAME_WIDTH)
     image_height = video.get(cv2.CAP_PROP_FRAME_HEIGHT)
-
-    # Exit if video not opened.
-    if not video.isOpened():
-        print("Could not open video!")
-        sys.exit()
-
-    # Read first frame.
-    ok, frame = video.read()
-    if not ok:
-        print("Cannot read video file")
-        sys.exit()
-
+    i = 0
+    frame_skip = 10
+    
     # read template: enable to read files with 2bytes chalactors
     temp = imread(template)
     #exit("can not open template!") if temp is None else cv2.imshow("template", temp)
@@ -198,22 +201,45 @@ def start_sift_tracking():
 
     count = 0
 
-    while True:
+    for frame in camera.capture_continuous(rawCaputre, format="bgr", use_video_port=True):
+        image = frame.array
+        t1 = time.time()
+        tracker.found = False
+        tracker.track(image)
+        t2 = time.time()
+        print(t2-t1)
+        drive(tracker)
+
+        rawCaputre.truncate(0)
+        # Exit if "Q" pressed
+        k = cv2.waitKey(1) & 0xff
+        if k == ord('q'):
+            GPIO.cleanup()
+            break
+        if k == ord('s'):
+            cv2.imwrite('result.png', tracker.show)
+            break
+        if k == ord('r'):
+            tracker.refresh(image)
+
+
+
+"""     while True:
         # Read a new frame
         ok, frame = video.read()
         if not ok:
             break
-
-        # Tracking Object
-        t1 = time.time()
-        tracker.track(frame)
-        t2 = time.time()
-        print(t2-t1)
-        count += 1
-        if count >= 10 or tracker.found:
+        if i > frame_skip - 1:
+            # Tracking Object
+            t1 = time.time()
+            tracker.found = False
+            tracker.track(frame)
+            t2 = time.time()
+            print(t2-t1)
             drive(tracker)
-            count = 0
-        # T.check()
+            i = 0
+            continue
+        i += 1
 
         # Exit if "Q" pressed
         k = cv2.waitKey(1) & 0xff
@@ -224,4 +250,4 @@ def start_sift_tracking():
             cv2.imwrite('result.png', tracker.show)
             break
         if k == ord('r'):
-            tracker.refresh(frame)
+            tracker.refresh(frame) """

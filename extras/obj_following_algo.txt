@@ -8,7 +8,7 @@ Startup ->
         Turn left until safe to move forward
 4. Repeat 1.
 
-Object found ->
+Object follow ->
 1. Check x distance from center of frame and turn left / right proportionally ((obj_x - center_x) + 0.5(obj_len))
 2. Once in center of frame, move forward
 3. Repeat 1.
