@@ -15,14 +15,6 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
 
 <!-- PROJECT LOGO -->
 <br />
@@ -81,10 +73,10 @@
 ## WIP
 
 # SIFT detection
-[Detected forward](https://i.imgur.com/3jzXPPq.jpeg)
-[Detected left](https://i.imgur.com/s3Lckgj.jpg)
-[Detected right](https://i.imgur.com/ETSRgLr.jpg)
-[Not detected](https://i.imgur.com/OdFCMP1.jpg)
+![Detected forward](https://i.imgur.com/3jzXPPq.jpeg)
+![Detected left](https://i.imgur.com/s3Lckgj.jpg)
+![Detected right](https://i.imgur.com/ETSRgLr.jpg)
+![Not detected](https://i.imgur.com/OdFCMP1.jpg)
 
 # scarob
 [S]enior [C]itizen [A]ssistive [Rob]ot
