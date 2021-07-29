@@ -73,7 +73,7 @@
 # WIP
 
 ## Fall-detection and notification
-![Fall detection](https://media.giphy.com/media/BeQY9c6wQtcq0HLZG5/giphy.gif)
+![Fall detection](https://github.com/ericmiranda7/scarob/blob/main/images/fd.gif)
 
 ## SIFT detection
 ![Detected forward](https://i.imgur.com/3jzXPPq.jpeg)
