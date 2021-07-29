@@ -70,9 +70,12 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## WIP
+# WIP
 
-# SIFT detection
+## Fall-detection and notification
+![Fall detection](https://media.giphy.com/media/BeQY9c6wQtcq0HLZG5/giphy.gif)
+
+## SIFT detection
 ![Detected forward](https://i.imgur.com/3jzXPPq.jpeg)
 ![Detected left](https://i.imgur.com/s3Lckgj.jpg)
 ![Detected right](https://i.imgur.com/ETSRgLr.jpg)
